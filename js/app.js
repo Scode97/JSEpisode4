@@ -40,6 +40,7 @@ const setup = function() {
  * createNewTask(itemString);
  ********************************************/
 const createNewTask = function(taskString) {
+  // below is done for each element... for all 
   let listItem = document.createElement("li"); // Create List Item
   let checkBox = document.createElement("input"); // Input (checkbox)
   let label = document.createElement("label"); // Label
@@ -57,7 +58,13 @@ const createNewTask = function(taskString) {
   // editButton.onclick = ...
   // checkBox.onchange = ...
 
+  editButton.onclick = editTask ;
+  checkBox.onchange = completeTask;
+
+
   // Append each element to the listItem
+  // order below is important
+
   listItem.appendChild(checkBox);
   listItem.appendChild(label);
   listItem.appendChild(editInput);
@@ -75,7 +82,25 @@ const createNewTask = function(taskString) {
  *****************************************************/
 const addTask = function() {
   // Complete me!
+// just to chk.... alert("I be clicked");
+  //todoList = Document.getElementsByClassName("div.container");
+  let task = taskInput.value;
+  if(!task){
+    task = 'New Task';
+  }
+  let r = createNewTask(task);
+  
+  todoList.appendChild(r);
+  taskInput.value = "";
+
+  /* OR
+   const newItem = createNewTask(taskInput.value) || "New Task" ; 
+  todoList.appendChild(newItem);
+  taskInput.value = "";
+  */
+
 };
+
 
 /*****************************************************************
  * Edit a task:
@@ -93,8 +118,37 @@ const addTask = function() {
 const editTask = function() {
   // get the current list item which is the parent
   // node of the current button (`this`)
-  let listItem = this.parentNode;
+  // let listItem = this.parentNode;
   // Complete me!
+
+  // listLabel = listItem.querySelector("label");
+  // console.log("dddee");
+  // l= listItem.getElementsByClassName("edit-mode");
+  // if(l.length)
+  // { 
+  //   console.log("ddd");
+  //   listLabel.value = taskInput;
+  //   listLabel.value = ""
+  // }
+    let listItem = this.parentNode;
+    let label = listItem.querySelector('label');
+    // the above will get me the first label in the list Item
+    // queryselector... u pass it a CSS selector
+    let textInput = listItem.querySelector('input[type=text]');
+    //console.log(listItem.classList)
+    if(listItem.classList.contains("edit-mode"))
+    {
+      label.innerHTML = textInput.value;
+      this.innerHTML = "Edit";
+    } 
+    else
+    {
+      textInput.value = label.innerHTML;
+      this.innerHTML = "Save";
+    }
+    listItem.classList.toggle("edit-mode");
+    // classlist has a method toggle.. chk toggle
+
 };
 
 /***********************************
@@ -104,6 +158,14 @@ const editTask = function() {
  ***********************************/
 const completeTask = function() {
   // Complete me!
+  // just notice the onchange function  is connected to all inputs
+  // the thing that calls the function is "this" in out case its the object
+  // just chk console.log(this.parentNode)
+  // every time u have a DOM element, the parent node is the elemenet above.
+todoList.removeChild(this.parentNode);
+ 
+//OR THIS... this.parentNode.remove();
+
 };
 
 module.exports = {
